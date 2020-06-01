@@ -1,10 +1,10 @@
 
-jsPsych.plugins["evan-two-stim-choice"] = (function() {
+jsPsych.plugins["evan-feature33"] = (function() {
 
   var plugin = {};
 
   plugin.info = {
-    name: "evan-two-stim-choice",
+    name: "evan-feature33",
     parameters: {
         c1_reward_prob: { // probability of outcome 1 if choice is 1
           type: jsPsych.plugins.parameterType.FLOAT,
@@ -63,52 +63,32 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
           .attr("x", 0).attr("y", 0).attr("width", w)
           .attr("height", h).style("fill", 'gray').style("opacity",.7);
 
-
-    // place a fixation cross
-    //d3.select('svg').append("text")
-    //                .attr("x",  w/2)
-    //                .attr("y", h/2)
-    //                .attr("font-family","monospace")
-    //                .attr("font-weight","bold")
-    //                .attr("dominant-baseline", "central")
-    //                .attr("font-size", h/10)
-    //                .attr("text-anchor","middle")
-    //                .attr("fill", "white")
-    //                .style("opacity",1)
-    //                .text('+')
-
-
-
-
-
     // function to place the choice stims and wait for a response (called at the bottom of plugin.trial)
 
     var display_choice_stim_wait_for_response = function(){
 
-      var choice_bkg_width = w/4;
-      var choice_bkg_height = w/4;
-      var choice_img_width = w/5;
-      var choice_img_height = w/5;
+      var choice_img_width = w/10;
+      var choice_img_height = w/10;
 
       // place left image background
-      d3.select("svg").append("rect")
-              .attr("class","choice cL") // this will let us reference the object to change it's color
-              .attr("x", w/3 - choice_bkg_width/2)
-              .attr("y", h/2 - choice_bkg_height/2)
-              .attr("width", choice_bkg_width)
-              .attr("height", choice_bkg_height)
-              .style("fill", "blue")
-              .style("opacity",1); // set the
+      //d3.select("svg").append("rect")
+      //        .attr("class","choice cL") // this will let us reference the object to change it's color
+      //        .attr("x", w/3 - choice_bkg_width/2)
+      //        .attr("y", h/2 - choice_bkg_height/2)
+      //        .attr("width", choice_bkg_width)
+      //        .attr("height", choice_bkg_height)
+      //        .style("fill", "blue")
+      //        .style("opacity",1); // set the
 
         // place right image background
-        d3.select("svg").append("rect")
-              .attr("class","choice cR") // this will let us reference the object to change it's color
-              .attr("x", 2*w/3 - choice_bkg_width/2)
-              .attr("y", h/2 - choice_bkg_height/2)
-              .attr("width", choice_bkg_width)
-              .attr("height", choice_bkg_height)
-              .style("fill", "blue")
-              .style("opacity",1); // set the
+      //  d3.select("svg").append("rect")
+      //        .attr("class","choice cR") // this will let us reference the object to change it's color
+      //        .attr("x", 2*w/3 - choice_bkg_width/2)
+      //        .attr("y", h/2 - choice_bkg_height/2)
+      //        .attr("width", choice_bkg_width)
+      //        .attr("height", choice_bkg_height)
+      //        .style("fill", "blue")
+      //        .style("opacity",1); // set the
 
 
         // place choice left image - note how we reference trial.c1_image - this was passed in
