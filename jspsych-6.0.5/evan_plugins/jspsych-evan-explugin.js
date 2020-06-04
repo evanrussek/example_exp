@@ -58,7 +58,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
         chosen_side: null,
       };
     // define a reward they got which we'll also record
-    var reward = null;
+    var reward_val = null;
 
     ///////////////////////////////////////////////////////////////////////////
     ///////////////// PLACE THE SVG CANVAS AND BACKGROUND ON WHICH WE'll DRAW THINGS ////
