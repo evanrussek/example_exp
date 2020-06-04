@@ -1,12 +1,20 @@
 
+<<<<<<< HEAD:jspsych-6.0.5/evan_plugins/jspsych-evan-explugin.js
 jsPsych.plugins["evan-two-stim-choice"] = (function() {
   // the name above is how we'll reference this
+=======
+jsPsych.plugins["evan-feature33"] = (function() {
+>>>>>>> origin/master:jspsych-6.0.5/evan_plugins/jspsych-evan-feature33-old.js
 
   var plugin = {};
 
   plugin.info = {
+<<<<<<< HEAD:jspsych-6.0.5/evan_plugins/jspsych-evan-explugin.js
     // the name here should be the same
     name: "evan-two-stim-choice",
+=======
+    name: "evan-feature33",
+>>>>>>> origin/master:jspsych-6.0.5/evan_plugins/jspsych-evan-feature33-old.js
     parameters: {
         // these are parameters that the plug_in takes in...
         c1_reward_prob: { // probability of outcome 1 if choice is 1
@@ -81,6 +89,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     // here's a link for all the things you can place with d3 (and a whole tutorial on using it)
     // https://www.dashingd3js.com/svg-basic-shapes-and-d3js
     d3.select("svg").append("rect")
+<<<<<<< HEAD:jspsych-6.0.5/evan_plugins/jspsych-evan-explugin.js
           .attr("x", 0).attr("y", 0).attr("width", w) // 0, 0 is top left of the "svg" canvas
           .attr("height", h).style("fill", 'black').style("opacity",.7);
 
@@ -103,10 +112,17 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     // handle response: this just records some things about their response, runs some animations and then calls next function
     // display outcome: this displays the outcome (0 or 1)
     // end trial: this records the data and shuts down the SVG and ends the trial
+=======
+          .attr("x", 0).attr("y", 0).attr("width", w)
+          .attr("height", h).style("fill", 'gray').style("opacity",.7);
+
+    // function to place the choice stims and wait for a response (called at the bottom of plugin.trial)
+>>>>>>> origin/master:jspsych-6.0.5/evan_plugins/jspsych-evan-feature33-old.js
 
     // function to place the choice stims and wait for a response (we call this at the bottom)
     var display_choice_stim_wait_for_response = function(){
 
+<<<<<<< HEAD:jspsych-6.0.5/evan_plugins/jspsych-evan-explugin.js
       var choice_bkg_width = w/4; // we can reference w because it's scope is above this function's scope
       var choice_bkg_height = w/4;
       var choice_img_width = w/5;
@@ -131,6 +147,30 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
               .attr("height", choice_bkg_height)
               .style("fill", "blue")
               .style("opacity",1);
+=======
+      var choice_img_width = w/10;
+      var choice_img_height = w/10;
+
+      // place left image background
+      //d3.select("svg").append("rect")
+      //        .attr("class","choice cL") // this will let us reference the object to change it's color
+      //        .attr("x", w/3 - choice_bkg_width/2)
+      //        .attr("y", h/2 - choice_bkg_height/2)
+      //        .attr("width", choice_bkg_width)
+      //        .attr("height", choice_bkg_height)
+      //        .style("fill", "blue")
+      //        .style("opacity",1); // set the
+
+        // place right image background
+      //  d3.select("svg").append("rect")
+      //        .attr("class","choice cR") // this will let us reference the object to change it's color
+      //        .attr("x", 2*w/3 - choice_bkg_width/2)
+      //        .attr("y", h/2 - choice_bkg_height/2)
+      //        .attr("width", choice_bkg_width)
+      //        .attr("height", choice_bkg_height)
+      //        .style("fill", "blue")
+      //        .style("opacity",1); // set the
+>>>>>>> origin/master:jspsych-6.0.5/evan_plugins/jspsych-evan-feature33-old.js
 
         // place choice left image - note how we reference trial.c1_image - this is the image string that was passed in representing this image
         d3.select("svg").append("svg:image").attr("class", "choice cL").attr("x", w/3 - choice_img_width/2)
