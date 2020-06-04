@@ -24,10 +24,6 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
         c2_image: { // image to represent choice 2
           type: jsPsych.plugins.parameterType.IMAGE,
           default: undefined
-      },
-      choice_prompt: { // show a prompt?
-        type: jsPsych.plugins.parameterType.BOOL,
-        default: true
       }
     }
  }
@@ -91,7 +87,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     ///////////////// START THE TRIAL ////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
 
-    // wait pretrial time sec (this is the ITI), call first part of trial (this is the first thing called after initial display)
+    // wait 1000 msec, and then call first part of trial (this is the first thing called after initial display)
     jsPsych.pluginAPI.setTimeout(function() {
       display_choice_stim_wait_for_response();
     }, 1000); // this is where the ITI goes
@@ -112,29 +108,28 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     var display_choice_stim_wait_for_response = function(){
 
       // place choice left image - note how we reference trial.c1_image - this is the image string that was passed in representing this image
-      d3.select("svg").append("svg:image").attr("class", "choice cL").attr("x", w/3 - choice_img_width/2)
+      // note how we define the image class. this lets us reference it later so that we can animate interval
+      d3.select("svg").append("svg:image").attr("class", "cL").attr("x", w/3 - choice_img_width/2)
           .attr("y", h/2 - choice_img_height/2).attr("width",choice_img_width).attr("height",choice_img_height)
           .attr("xlink:href", trial.c1_image).style("opacity",1);
 
       // place choice right image
-      d3.select("svg").append("svg:image").attr("class", "choice cR").attr("x", 2*w/3 - choice_img_width/2)
+      d3.select("svg").append("svg:image").attr("class", "cR").attr("x", 2*w/3 - choice_img_width/2)
           .attr("y", h/2 - choice_img_height/2).attr("width",choice_img_width).attr("height",choice_img_height)
           .attr("xlink:href", trial.c2_image).style("opacity",1);
 
       // place text with choice instructions, "choice prompt": this is how you place text...
-      if (trial.choice_prompt){
-        d3.select("svg").append("text")
-                      .attr("class", "choice text")
-                      .attr("x", w/2)
-                      .attr("y", 7*h/8)
-                      .attr("font-family","Helvetica")
-                      .attr("font-weight","light")
-                      .attr("font-size",h/40)
-                      .attr("text-anchor","middle")
-                      .attr("fill", "white")
-                      .style("opacity",1)
-                      .text('Press 1 for LEFT machine or 2 for RIGHT machine')
-      }
+      d3.select("svg").append("text")
+                    .attr("class", "choice text")
+                    .attr("x", w/2)
+                    .attr("y", 7*h/8)
+                    .attr("font-family","Helvetica")
+                    .attr("font-weight","light")
+                    .attr("font-size",h/40)
+                    .attr("text-anchor","middle")
+                    .attr("fill", "white")
+                    .style("opacity",1)
+                    .text('Press 1 for LEFT machine or 2 for RIGHT machine')
 
 
       // define valid responses - these keys were defined above
@@ -181,7 +176,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
       // CL is the left stimulus and CR is the right stimulus
       // we'll use this to change the color of what they chose, and fade out what they ddn't choose
       if (choice_char == choose_left_key){ // if they chose left
-        var chosen_class = '.cL';
+        var chosen_class = '.cL'; // when we defined the images, we defined their class as "cL" and "cR"
         var unchosen_class = '.cR';
         // response is a global variable (no var in front of it)
         // this lets us reference it in the next function
@@ -194,6 +189,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
       else{console.log('SURPRISE');}
 
       // change opacity of what they didn't choose over 350 msec
+      // d3 function .transition causes image to change to whatever follows it, over duration time
       d3.select(unchosen_class).transition().style('opacity',0).duration(350)
 
       // for 500 msec and then transition the chosen one to center of screen

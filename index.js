@@ -13,7 +13,7 @@ var full_screen = { // this plugin will prompt the full screen
   type: 'fullscreen',
   fullscreen_mode: true
 };
-
+timeline.push(full_screen)
 
 /* define instructions trial */
 var instructions = {
@@ -28,13 +28,13 @@ var instructions = {
       "<p>Press any key to begin.</p>",
   post_trial_gap: 1000
 };
+timeline.push(instructions)
 
 
-
+// give path to choice images
 var choice_images = ["Stimuli/Evan_Stimuli/Banana.png",
                   "Stimuli/Evan_Stimuli/House.png",
                 ];
-
 
 // function to sample from normal distribution
 // https://stackoverflow.com/questions/25582882/javascript-math-random-normal-distribution-gaussian-bell-curve/36481059#36481059
@@ -48,29 +48,28 @@ var randn_bm = function() {
     return num;
 }
 
+// set mean for either choice
 var c1_mean = 40;
 var c2_mean = 50;
+
 var sd = 8;
+ // define 10 of these trials and push them onto the array.
+n_choice_trials = 10;
 
-// place choie stim, wait for response
-n_choice_trials = 10; // define 10 of these trials and push them onto the array.
-
-timeline = [full_screen];
-timeline.push(instructions)
+// loop through each choice trial and push it to the array
 for (var i = 0; i < n_choice_trials; i++){
   var choice_trial = { // this calls the plugin that i made in - jspsych-evan-explugin.js
-    // it sets parameters for the plugin
     type: 'evan-two-stim-choice',
     c1_image: choice_images[0],
     c2_image: choice_images[1],
     c1_reward: Math.round(c1_mean + sd*randn_bm()),
-    c2_reward: Math.round(c2_mean + sd*randn_bm()),
-    choice_prompt: true,
+    c2_reward: Math.round(c2_mean + sd*randn_bm())
   }
   timeline.push(choice_trial);
 }
 
-jsPsych.init({ // this runs the exmperiment and does a local save of the results.
+//  run the exmperiment, do a local save of the results.
+jsPsych.init({
     timeline: timeline,
     show_preload_progress_bar: false,
     on_finish: function() {
