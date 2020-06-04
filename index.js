@@ -36,16 +36,21 @@ var choice_images = ["Stimuli/Evan_Stimuli/Banana.png",
                 ];
 
 
-
-var choice_trial = { // this calls the plugin that i made in - jspsych-evan-explugin.js
-  // it sets parameters for the plugin
-  type: 'evan-two-stim-choice',
-  c1_image: choice_images[0],
-  c2_image: choice_images[1],
-  c1_reward_prob: .3,
-  c2_reward_prob: .7,
-  choice_prompt: true,
+// function to sample from normal distribution
+// https://stackoverflow.com/questions/25582882/javascript-math-random-normal-distribution-gaussian-bell-curve/36481059#36481059
+var randn_bm = function() {
+    let u = 0, v = 0;
+    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+    while(v === 0) v = Math.random();
+    let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+    num = num / 10.0 + 0.5; // Translate to 0 -> 1
+    if (num > 1 || num < 0) return randn_bm(); // resample between 0 and 1
+    return num;
 }
+
+var c1_mean = 40;
+var c2_mean = 50;
+var sd = 8;
 
 // place choie stim, wait for response
 n_choice_trials = 10; // define 10 of these trials and push them onto the array.
@@ -53,6 +58,15 @@ n_choice_trials = 10; // define 10 of these trials and push them onto the array.
 timeline = [full_screen];
 timeline.push(instructions)
 for (var i = 0; i < n_choice_trials; i++){
+  var choice_trial = { // this calls the plugin that i made in - jspsych-evan-explugin.js
+    // it sets parameters for the plugin
+    type: 'evan-two-stim-choice',
+    c1_image: choice_images[0],
+    c2_image: choice_images[1],
+    c1_reward: Math.round(c1_mean + sd*randn_bm()),
+    c2_reward: Math.round(c2_mean + sd*randn_bm()),
+    choice_prompt: true,
+  }
   timeline.push(choice_trial);
 }
 

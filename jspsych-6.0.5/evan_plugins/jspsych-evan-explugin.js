@@ -9,15 +9,15 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     name: "evan-two-stim-choice",
     parameters: {
         // these are parameters that the plug_in takes in...
-        c1_reward_prob: { // probability of outcome 1 if choice is 1
-          type: jsPsych.plugins.parameterType.FLOAT,
+        c1_reward: { // c1 reward value
+          type: jsPsych.plugins.parameterType.INT,
           default: undefined
         },
-        c2_reward_prob: { // probability of outcome 1 if cohice is 2
-          type: jsPsych.plugins.parameterType.FLOAT,
+        c2_reward: { // probability of outcome 1 if cohice is 2
+          type: jsPsych.plugins.parameterType.INT,
           default: undefined
         },
-        c1_image: { // image to represent choice 1
+        c1_image: { // c2 reward value
           type: jsPsych.plugins.parameterType.IMAGE,
           default: undefined
         },
@@ -50,6 +50,9 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     var parentDiv = document.body;
     var w = parentDiv.clientWidth;
     var h = parentDiv.clientHeight;
+
+    var choice_img_width = w/5;
+    var choice_img_height = w/5;
 
     // define structures for variables we might record so that if the trial ends, but we haven't defined these yet, the task doesn't break
     var response = {
@@ -98,6 +101,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     ///////////////// FUNCTIONS WHICH RUN the TRIAL ///////////////////////////
     //////////////////////////////////////////////////////////////////////////
 
+
     // The functions are:
     // display_choice_stim_wait_for_response: this places choice stimuli and also sets up a "response handler", which calls the next fun when they respond
     // handle response: this just records some things about their response, runs some animations and then calls next function
@@ -107,68 +111,43 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     // function to place the choice stims and wait for a response (we call this at the bottom)
     var display_choice_stim_wait_for_response = function(){
 
-      var choice_bkg_width = w/4; // we can reference w because it's scope is above this function's scope
-      var choice_bkg_height = w/4;
-      var choice_img_width = w/5;
-      var choice_img_height = w/5;
+      // place choice left image - note how we reference trial.c1_image - this is the image string that was passed in representing this image
+      d3.select("svg").append("svg:image").attr("class", "choice cL").attr("x", w/3 - choice_img_width/2)
+          .attr("y", h/2 - choice_img_height/2).attr("width",choice_img_width).attr("height",choice_img_height)
+          .attr("xlink:href", trial.c1_image).style("opacity",1);
 
-      // place a blue rectangle behind the left image
-      d3.select("svg").append("rect")
-              .attr("class","choice cL") // we assign this object a "class" so that we can reference it later (to change it's color)
-              .attr("x", w/3 - choice_bkg_width/2)
-              .attr("y", h/2 - choice_bkg_height/2)
-              .attr("width", choice_bkg_width)
-              .attr("height", choice_bkg_height)
-              .style("fill", "blue")
-              .style("opacity",1);
+      // place choice right image
+      d3.select("svg").append("svg:image").attr("class", "choice cR").attr("x", 2*w/3 - choice_img_width/2)
+          .attr("y", h/2 - choice_img_height/2).attr("width",choice_img_width).attr("height",choice_img_height)
+          .attr("xlink:href", trial.c2_image).style("opacity",1);
 
-        // place a blue rectangle behind the right image
-        d3.select("svg").append("rect")
-              .attr("class","choice cR")
-              .attr("x", 2*w/3 - choice_bkg_width/2)
-              .attr("y", h/2 - choice_bkg_height/2)
-              .attr("width", choice_bkg_width)
-              .attr("height", choice_bkg_height)
-              .style("fill", "blue")
-              .style("opacity",1);
-
-        // place choice left image - note how we reference trial.c1_image - this is the image string that was passed in representing this image
-        d3.select("svg").append("svg:image").attr("class", "choice cL").attr("x", w/3 - choice_img_width/2)
-            .attr("y", h/2 - choice_img_height/2).attr("width",choice_img_width).attr("height",choice_img_height)
-            .attr("xlink:href", trial.c1_image).style("opacity",1);
-
-        // place choice right image
-        d3.select("svg").append("svg:image").attr("class", "choice cR").attr("x", 2*w/3 - choice_img_width/2)
-            .attr("y", h/2 - choice_img_height/2).attr("width",choice_img_width).attr("height",choice_img_height)
-            .attr("xlink:href", trial.c2_image).style("opacity",1);
-
-        // place text with choice instructions, "choice prompt": this is how you place text...
-        if (trial.choice_prompt){
-          d3.select("svg").append("text")
-                        .attr("class", "choice text")
-                        .attr("x", w/2)
-                        .attr("y", 7*h/8)
-                        .attr("font-family","Helvetica")
-                        .attr("font-weight","light")
-                        .attr("font-size",h/40)
-                        .attr("text-anchor","middle")
-                        .attr("fill", "white")
-                        .style("opacity",1)
-                        .text('Press 1 for LEFT machine or 2 for RIGHT machine')
-        }
+      // place text with choice instructions, "choice prompt": this is how you place text...
+      if (trial.choice_prompt){
+        d3.select("svg").append("text")
+                      .attr("class", "choice text")
+                      .attr("x", w/2)
+                      .attr("y", 7*h/8)
+                      .attr("font-family","Helvetica")
+                      .attr("font-weight","light")
+                      .attr("font-size",h/40)
+                      .attr("text-anchor","middle")
+                      .attr("fill", "white")
+                      .style("opacity",1)
+                      .text('Press 1 for LEFT machine or 2 for RIGHT machine')
+      }
 
 
-        // define valid responses - these keys were defined above
-        var valid_responses = [choose_left_key, choose_right_key];
+      // define valid responses - these keys were defined above
+      var valid_responses = [choose_left_key, choose_right_key];
 
-        // jspsych function to listen for responses
-        var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
-            callback_function: handle_response, // call handle_response if valid response is entered
-            valid_responses: valid_responses, // defines which keys to accept
-            rt_method: 'performance', //
-            persist: false,
-            allow_held_key: false
-          });
+      // jspsych function to listen for responses
+      var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
+          callback_function: handle_response, // call handle_response if valid response is entered
+          valid_responses: valid_responses, // defines which keys to accept
+          rt_method: 'performance', //
+          persist: false,
+          allow_held_key: false
+        });
 
       // define max response tiem - set timer to wait for that time (this will be turned off when they make a response)
       var max_response_time = 100000; // set to a very large value
@@ -214,20 +193,21 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
         response.chosen_side = 2;}
       else{console.log('SURPRISE');}
 
-      // select what they choise and change it to red (note this only affects the rect, not the image because that doesn't have a color attribute)
-      d3.select(chosen_class).style('fill',"red");
-      // transition the opacty of what they didn't chcoose to 0 (over 350 milliseconds)
+      // change opacity of what they didn't choose over 350 msec
+      d3.select(unchosen_class).transition().style('opacity',0).duration(350)
 
-      // we use selectAll because we're selecting multiple items (the image and also the rectangle)
-      d3.selectAll(unchosen_class).transition().style('opacity',0).duration(350)
+      // for 500 msec and then transition the chosen one to center of screen
+      // transition to top center
+      d3.select(chosen_class).transition().attr('y',h/10)
+            .attr('x', w/2 - choice_img_width/2).duration(500);
 
       // wait for some amount of time and then call display outcome
       jsPsych.pluginAPI.setTimeout(function() {
           // remove the choice class
-          d3.selectAll(".choice").remove()
+          //d3.selectAll(".choice").remove()
           display_outcome();
 
-        }, 1000); // this runs 1000 ms after choice is made
+        }, 1000);
 
     } // end handle response function
 
@@ -261,14 +241,8 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
       // function to display choice outcome.
       var display_outcome = function(){
 
-        var reward_probs = [trial.c1_reward_prob, trial.c2_reward_prob];
-        // draw random sample to see whether rewarded // note javascript is 0 indexed...
-        if (reward_probs[response.chosen_side - 1] < Math.random()){
-          var reward_val = 1;
-        }else{
-          var reward_val = 0;
-        }
-        reward = reward_val;
+        var bandit_rewards = [trial.c1_reward, trial.c2_reward];
+        reward_val = bandit_rewards[response.chosen_side - 1];
 
         // wait for some amount of time and display reward
         jsPsych.pluginAPI.setTimeout(function() {
@@ -277,14 +251,16 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
                     .attr("class", "outcome")
                     .attr("x", w/2)
                     .attr("y", h/2 + w/12)
-                    .attr("font-family","monospace")
-                    .attr("font-weight","bold")
-                    .attr("font-size",w/6)
+                    .attr("font-family","Helvetica")
+                    .attr("font-weight","light")
+                    .attr("font-size",w/8)
                     .attr("text-anchor","middle")
-                    .attr("fill", "yellow")
-                    .style("opacity",1)
+                    .attr("fill", "silver")
                     .text(reward_val)
-
+                    .style("opacity",0)
+                    .transition()
+                    .style("opacity",1)
+                    .duration(500)
           }, 500); // this runs wait 500 then show reward
 
           // wait some time and then end trial
@@ -292,7 +268,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
               // remove the choice class
               end_trial();
 
-        }, 1500); // 1500 msec after display_outcome is called
+        }, 2500); // 2500 msec after display_outcome is called
       } // end display outcome
 
     /// functon to end trial, save data,
@@ -309,7 +285,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
       var trial_data = {
         "key_press_num": response.key,
         "chosen_side": response.chosen_side,
-        "reward": reward,
+        "reward": reward_val,
         "rt": response.rt,
       };
       // print this to the browser console
