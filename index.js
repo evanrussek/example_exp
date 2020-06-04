@@ -29,28 +29,21 @@ var instructions = {
   post_trial_gap: 1000
 };
 
-//var outcome_images = ["Stimuli/Evan_Stimuli/Girl.png", // image paths
-//                  "Stimuli/Evan_Stimuli/House.png",
-//                  "Stimuli/Evan_Stimuli/Banana.png"];
 
 
-var choice_images = ["Stimuli/Evan_Stimuli/fractal_A.png",
-                  "Stimuli/Evan_Stimuli/fractal_B.png",
-                  "Stimuli/Evan_Stimuli/fractal_C.png",
+var choice_images = ["Stimuli/Evan_Stimuli/Banana.png",
+                  "Stimuli/Evan_Stimuli/House.png",
                 ];
 
 
 
 var choice_trial = { // this calls the plugin that i made in - jspsych-evan-explugin.js
   // it sets parameters for the plugin
-  type: 'evan-feature33',
-  feature_rewards: [1, 2, 3],
+  type: 'evan-two-stim-choice',
   c1_image: choice_images[0],
   c2_image: choice_images[1],
-  c3_image: choice_images[2],
-  c1_feature_probs: [1,0,1],
-  c2_feature_probs: [0,0,1],
-  c3_feature_probs: [1,1,0],
+  c1_reward_prob: .3,
+  c2_reward_prob: .7,
   choice_prompt: true,
 }
 
