@@ -3,22 +3,24 @@
 <html>
   <head>
     <title>Task</title>
-    # here we load all the libraries we will need
-    # these are scripts that are in folders within the task folder
-    # we could also call webpages here as libraries
-    # this is the jspsych library
-    <script src="jspsych-6.0.5/jspsych.js"></script>
-    # these are jspsych defined plugins
+    <!-- these are libraries in our folder that we're reading in -->
 
+    <script src="jspsych-6.0.5/jspsych.js"></script>
+
+    <!-- style sheets -->
     <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    <link href="jspsych-6.0.5/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
+
+    <!-- jspsych plugins that we're using -->
     <script src="jspsych-6.0.5/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
-    # this is the one that i made
     <script src="jspsych-6.0.5/evan_plugins/jspsych-evan-explugin.js"></script>
-    # i use the d3 package to display stimuli, but there's many other ways to do it.
+
+    <!-- jspsych plugins that we're using -->
     <script type="text/javascript" src="jspsych-6.0.5/d3.min.js"></script>
   </head>
-  <body></body>
-  # this is the script that runs the experiment, using the above libraries
+  <body>
+  </body>
+  <!-- the main script which runs everything -->
   <script src="index.js"></script>
 </html>
