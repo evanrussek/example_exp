@@ -13,15 +13,15 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
           type: jsPsych.plugins.parameterType.INT,
           default: undefined
         },
-        c2_reward: { // probability of outcome 1 if cohice is 2
+        c2_reward: { // c2 reward value
           type: jsPsych.plugins.parameterType.INT,
           default: undefined
         },
-        c1_image: { // c2 reward value
+        c1_image: { // c1 image path (as a string)
           type: jsPsych.plugins.parameterType.IMAGE,
           default: undefined
         },
-        c2_image: { // image to represent choice 2
+        c2_image: { // c2 image path (as a string)
           type: jsPsych.plugins.parameterType.IMAGE,
           default: undefined
       }
