@@ -108,7 +108,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     var display_choice_stim_wait_for_response = function(){
 
       // place choice left image - note how we reference trial.c1_image - this is the image string that was passed in representing this image
-      // note how we define the image class. this lets us reference it later so that we can animate interval
+      // note how we define the image class. this lets us reference it later so that we can animate it
       d3.select("svg").append("svg:image").attr("class", "cL").attr("x", w/3 - choice_img_width/2)
           .attr("y", h/2 - choice_img_height/2).attr("width",choice_img_width).attr("height",choice_img_height)
           .attr("xlink:href", trial.c1_image).style("opacity",1);
