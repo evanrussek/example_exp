@@ -186,7 +186,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
         var chosen_class = '.cR';
         var unchosen_class = '.cL';
         response.chosen_side = 2;}
-      else{console.log('SURPRISE');}
+      else{console.log('SURPRISE');} // write to console...
 
       // change opacity of what they didn't choose over 350 msec
       // d3 function .transition causes image to change to whatever follows it, over duration time
@@ -194,17 +194,16 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
 
       // for 500 msec and then transition the chosen one to center of screen
       // transition to top center
+      // note that in javascript functions don't wait for previous functions to finish before running
+      // so we time it to include previous time. we could also trigger it to run when last one finished,
+      // but i find that more complicated
       d3.select(chosen_class).transition().attr('y',h/10)
             .attr('x', w/2 - choice_img_width/2).duration(500);
 
-      // wait for some amount of time and then call display outcome
+      // wait for some amount of time (from response being made) and then call display outcome
       jsPsych.pluginAPI.setTimeout(function() {
-          // remove the choice class
-          //d3.selectAll(".choice").remove()
           display_outcome();
-
-        }, 1000);
-
+        }, 1000); /// 1000 milliseconds after choice key...
     } // end handle response function
 
     // define function to handle responses that are too slow
