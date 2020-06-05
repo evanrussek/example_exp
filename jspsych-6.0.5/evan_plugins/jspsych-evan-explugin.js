@@ -174,7 +174,7 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
       // this figures out which image was chosen and which wasn't
       // record the class name of the chosen image
       // CL is the left stimulus and CR is the right stimulus
-      // we'll use this to change the color of what they chose, and fade out what they ddn't choose
+      // we'll use this to move position of what they chose, and fade out what they ddn't choose
       if (choice_char == choose_left_key){ // if they chose left
         var chosen_class = '.cL'; // when we defined the images, we defined their class as "cL" and "cR"
         var unchosen_class = '.cR';
