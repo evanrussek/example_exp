@@ -54,7 +54,7 @@ var c2_mean = 50;
 
 var sd = 8;
  // define 10 of these trials and push them onto the array.
-n_choice_trials = 10;
+var n_choice_trials = 10;
 
 // loop through each choice trial and push it to the array
 for (var i = 0; i < n_choice_trials; i++){
