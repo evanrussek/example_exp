@@ -268,7 +268,6 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
 
           // wait some time and then end trial
           jsPsych.pluginAPI.setTimeout(function() {
-              // remove the choice class
               end_trial();
         }, 2500); // end trial 2500 msec after display_outcome is called
       } // end display outcome
