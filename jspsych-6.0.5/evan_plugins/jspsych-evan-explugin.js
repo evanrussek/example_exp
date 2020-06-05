@@ -207,6 +207,9 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
     } // end handle response function
 
     // define function to handle responses that are too slow
+    // a timeout which calls this function is set up in display-stimuli-wait-for-response
+    // the handle response function kills that time-out. but if that doesn't happen before
+    // the set time, this function is called
     var handle_slow_response = function(){
         jsPsych.pluginAPI.clearAllTimeouts();
 
@@ -230,13 +233,18 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
         // wait some time and then end trial
         jsPsych.pluginAPI.setTimeout(function() {
             end_trial();
-          }, 1000); // show slow response for 1000 milliseconds
+          }, 1000); // show slow response for 1000 milliseconds then end trial
         } // end handle slow response
 
-      // function to display choice outcome.
+      // function to display choice outcome // called by handle_response
       var display_outcome = function(){
 
+        // trial.c1_reward trial.c2_reward and are passed in to plugin
+        // they have higher scope, so can be referenced here.
         var bandit_rewards = [trial.c1_reward, trial.c2_reward];
+        // declare reward_val as a global variable (no var in front of it)
+        // thus it alters the value of reward_val defined in above scope instead
+        // of creating a new var that only exists within this function
         reward_val = bandit_rewards[response.chosen_side - 1];
 
         // wait for some amount of time and display reward
@@ -255,15 +263,14 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
                     .style("opacity",0)
                     .transition()
                     .style("opacity",1)
-                    .duration(500)
+                    .duration(350) // fade reward in over 350 ms
           }, 500); // this runs wait 500 then show reward
 
           // wait some time and then end trial
           jsPsych.pluginAPI.setTimeout(function() {
               // remove the choice class
               end_trial();
-
-        }, 2500); // 2500 msec after display_outcome is called
+        }, 2500); // end trial 2500 msec after display_outcome is called
       } // end display outcome
 
     /// functon to end trial, save data,
@@ -277,18 +284,19 @@ jsPsych.plugins["evan-two-stim-choice"] = (function() {
       // remove the canvas and everthing within it
       d3.select('svg').remove()
 
+      // record trial data in json
       var trial_data = {
         "key_press_num": response.key,
         "chosen_side": response.chosen_side,
         "reward": reward_val,
         "rt": response.rt,
       };
-      // print this to the browser console
+      // print this to the browser console -- for debugging
       console.log(trial_data)
 
       // record data, end trial
       jsPsych.finishTrial(trial_data);
-    } // end end trial
+    } // end end_trial()
   }; // end plugin.trial
 
   return plugin;
